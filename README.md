@@ -222,6 +222,63 @@ Control your AI army from your phone — bed, café, or bathroom.
 
 **Voice input:** Use your phone's voice keyboard to speak commands. The Shogun understands natural language, so typos from speech-to-text don't matter.
 
+### For iPhone Users (iOS)
+
+**Requirements:**
+- [Tailscale](https://tailscale.com/) (free) — same as Android
+- [Blink Shell](https://blink.sh/) ($4.99/year, free trial available) — powerful SSH terminal for iOS
+- OR [iSH Shell](https://ish.app/) (free) — limited but usable alternative
+
+**Setup with Blink Shell (recommended):**
+
+1. Install Tailscale on both WSL and iPhone
+2. In WSL (same as Android setup):
+   ```bash
+   curl -fsSL https://tailscale.com/install.sh | sh
+   sudo tailscaled &
+   sudo tailscale up --authkey tskey-auth-XXXXXXXXXXXX
+   sudo service ssh start
+   ```
+3. In Blink Shell on iPhone:
+   - Create a new host: `youruser@your-tailscale-ip`
+   - Connect to the host
+   - Run: `css` to connect to Shogun
+4. Open a new Blink Shell window (add host again) for workers:
+   - Run: `csm` to see all 9 panes
+
+**Setup with iSH Shell (free alternative):**
+
+iSH is an Alpine Linux emulator for iOS. It's slower but works for basic SSH:
+
+```sh
+apk add openssh-client
+ssh youruser@your-tailscale-ip
+css    # Connect to Shogun
+```
+
+**Note:** iSH has performance limitations. Blink Shell is recommended for regular use.
+
+### Troubleshooting Mobile Access
+
+**Connection refused:**
+- Ensure SSH service is running in WSL: `sudo service ssh status`
+- Restart SSH if needed: `sudo service ssh start`
+- Check Tailscale is connected on both devices
+
+**Tailscale IP not reachable:**
+- Verify both devices are logged into the same Tailscale account
+- Check Tailscale status: `sudo tailscale status` in WSL
+- Try restarting Tailscale: `sudo service tailscaled restart`
+
+**Session detached unexpectedly:**
+- This is normal behavior. Simply reconnect with `css` or `csm`
+- Your tmux sessions and agents continue running in background
+
+**Performance issues on mobile:**
+- Reduce font size in terminal settings
+- Use Blink Shell's performance mode if available
+- Consider using `csm` only when needed — most work happens in background
+
 ---
 
 ## How It Works

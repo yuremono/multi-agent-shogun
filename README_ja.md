@@ -163,6 +163,66 @@ cd /mnt/c/tools/multi-agent-shogun
 
 **音声入力：** スマホの音声入力で喋れば、将軍が自然言語を理解して全軍に指示を出す。音声認識の誤字も文脈で解釈してくれる。
 
+### iPhone ユーザー向け（iOS）
+
+**必要なもの：**
+
+| 名前 | 一言で言うと | 価格 |
+|------|------------|------|
+| [Tailscale](https://tailscale.com/) | 外から自宅に届く道 | 無料 |
+| [Blink Shell](https://blink.sh/) | iPhoneの黒い画面 | 年$4.99（無料試用あり） |
+| [iSH Shell](https://ish.app/)（代替案） | 無料のターミナルアプリ | 無料（機能制限あり） |
+
+**Blink Shell でセットアップ（推奨）：**
+
+1. WSLとiPhoneの両方にTailscaleをインストール
+2. WSL側（Androidと同じ手順）：
+   ```bash
+   curl -fsSL https://tailscale.com/install.sh | sh
+   sudo tailscaled &
+   sudo tailscale up --authkey tskey-auth-XXXXXXXXXXXX
+   sudo service ssh start
+   ```
+3. iPhoneのBlink Shellから：
+   - 新しいホストを追加: `あなたのユーザー名@あなたのTailscale IP`
+   - ホストに接続
+   - `css` で将軍に繋がる
+4. ＋ボタンで新しいウィンドウを開いて部下の様子も見る：
+   - `csm` で9ペイン全部見える
+
+**iSH Shell でセットアップ（無料代替案）：**
+
+iSHはiOS向けのAlpine Linuxエミュレータです。動作は遅いですが基本のSSHは使えます：
+
+```sh
+apk add openssh-client
+ssh あなたのユーザー名@あなたのTailscale IP
+css    # 将軍に繋がる
+```
+
+**注意:** iSHは性能制限があります。常用するならBlink Shellを推奨。
+
+### トラブルシューティング（モバイルアクセス）
+
+**接続が拒否される（Connection refused）：**
+- SSHサービスが動いているか確認: `sudo service ssh status`
+- 必要なら再起動: `sudo service ssh start`
+- 両方のデバイスでTailscaleが接続されているか確認
+
+**Tailscale IP に繋がらない：**
+- 両方のデバイスが同じTailscaleアカウントでログインしているか確認
+- WSLで状態確認: `sudo tailscale status`
+- Tailscaleを再起動: `sudo service tailscaled restart`
+
+**セッションが突然切れた：**
+- 正常な動作です。`css` または `csm` で再接続してください
+- tmuxセッションとAI部下はバックグラウンドで稼働し続けています
+
+**モバイルでの動作が重い：**
+- ターミナル設定でフォントサイズを小さくする
+- Blink Shellのパフォーマンスモードを使用（利用可能な場合）
+- `csm` は必要な時だけ使う — ほとんどの作業はバックグラウンドで進行
+
 ---
 
 <details>
@@ -821,6 +881,8 @@ current_tasks:
 ---
 
 ## 🔧 トラブルシューティング
+
+**詳細なトラブルシューティングガイドはこちら:** [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
 <details>
 <summary><b>MCPツールが動作しない？</b></summary>

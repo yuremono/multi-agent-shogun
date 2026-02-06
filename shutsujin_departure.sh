@@ -405,14 +405,15 @@ log_war "👑 将軍の本陣を構築中..."
 
 # shogun セッションがなければ作る（-s 時もここで必ず shogun が存在するようにする）
 # window 0 のみ作成し -n main で名前付け（第二 window にするとアタッチ時に空ペインが開くため 1 window に限定）
-if ! tmux has-session -t shogun 2>/dev/null; then
-    tmux new-session -d -s shogun -n main
-fi
+# 競合回避：確実に削除してから作成
+tmux kill-session -t shogun 2>/dev/null || true
+sleep 0.1
+tmux new-session -d -s shogun -n main
 
 # 将軍ペインはウィンドウ名 "main" で指定（base-index 1 環境でも動く）
 SHOGUN_PROMPT=$(generate_prompt "将軍" "magenta" "$SHELL_SETTING")
 tmux send-keys -t shogun:main "cd \"$(pwd)\" && export PS1='${SHOGUN_PROMPT}' && clear" Enter
-tmux select-pane -t shogun:main -P 'bg=#002b36'  # 将軍の Solarized Dark
+tmux select-pane -t shogun:main -P 'bg=default'  # 将軍の背景色（デフォルト/透明）
 tmux set-option -p -t shogun:main @agent_id "shogun"
 
 log_success "  └─ 将軍の本陣、構築完了"
@@ -426,7 +427,9 @@ PANE_BASE=$(tmux show-options -gv pane-base-index 2>/dev/null || echo 0)
 # ═══════════════════════════════════════════════════════════════════════════════
 log_war "⚔️ 家老・足軽の陣を構築中（9名配備）..."
 
-# 最初のペイン作成
+# 最初のペイン作成（競合回避：確実に削除してから作成）
+tmux kill-session -t multiagent 2>/dev/null || true
+sleep 0.1
 if ! tmux new-session -d -s multiagent -n "agents" 2>/dev/null; then
     echo ""
     echo "  ╔════════════════════════════════════════════════════════════╗"

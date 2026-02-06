@@ -1,0 +1,62 @@
+#!/bin/bash
+# ==============================================================================
+# notify-karo - 足軽から家老への通知スクリプト
+# ==============================================================================
+# 機能: tmux send-keysの複雑さを隠蔽し、簡素なインターフェースを提供
+# 使用例: notify-karo "ashigaru1より報告"
+# ==============================================================================
+
+set -euo pipefail
+
+# 設定
+KARO_PANE="multiagent:0.0"
+SCRIPT_NAME=$(basename "$0")
+
+# ヘルプ表示関数
+show_help() {
+  cat << EOF
+使用方法: $SCRIPT_NAME <message>
+
+足軽から家老（Karo）ペインにメッセージを送信します。
+
+引数:
+  message        送信するメッセージ（必須）
+
+オプション:
+  -h, --help     このヘルプを表示
+
+例:
+  $SCRIPT_NAME "ashigaru1より報告"
+  $SCRIPT_NAME "任務完了でござる"
+
+EOF
+}
+
+# 引数チェック（先に実行して $1 未定義エラーを回避）
+if [[ $# -eq 0 ]]; then
+  echo "エラー: メッセージが指定されていません。" >&2
+  echo "" >&2
+  echo "使用方法: $SCRIPT_NAME <message>" >&2
+  echo "ヘルプを見るには: $SCRIPT_NAME -h" >&2
+  exit 1
+fi
+
+# ヘルプオプションの処理（引数チェック後）
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+  show_help
+  exit 0
+fi
+
+MESSAGE="$*"
+
+# tmuxセッションの存在確認
+if ! tmux has-session -t multiagent 2>/dev/null; then
+  echo "エラー: tmuxセッション 'multiagent' が見つかりません。" >&2
+  exit 1
+fi
+
+# 家老ペインへの送信（2回に分けて実行）
+tmux send-keys -t "$KARO_PANE" "$MESSAGE"
+tmux send-keys -t "$KARO_PANE" Enter
+
+echo "✓ メッセージを家老へ送信いたしました: $MESSAGE"
