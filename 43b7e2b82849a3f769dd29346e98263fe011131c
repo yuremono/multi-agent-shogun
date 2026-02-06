@@ -1,0 +1,23 @@
+instructions/summary/bugyo_summary.md
+  c1c4acde9f2e7ba8 5,9,13,15-19,21,23,25-28,30-37,39-49,51-52,55-61,63-66,68-83,86,90-91,95-96,99-176,178-179,181-188,190-191,193-220,223,226,228,230,232-235,237-238,241,243-271,274-285,289,294-303,305,307-308,320-321,324-326,328,330,332-349,351-352,354-355,357,359,361-365,367-373,375-377,379-380,383,385-407,411-511
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.0.42",
+  "base_commit_sha": "43b7e2b82849a3f769dd29346e98263fe011131c",
+  "prompts": {
+    "c1c4acde9f2e7ba8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2661054-4bd5-4e3c-8b49-b256fe72508e",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 428,
+      "total_deletions": 68,
+      "accepted_lines": 424,
+      "overriden_lines": 0
+    }
+  }
+}
