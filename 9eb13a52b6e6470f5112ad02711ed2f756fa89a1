@@ -1,0 +1,23 @@
+instructions/summary/shogun_summary.md
+  fd3bfbec913275d4 1-411
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.0.42",
+  "base_commit_sha": "9eb13a52b6e6470f5112ad02711ed2f756fa89a1",
+  "prompts": {
+    "fd3bfbec913275d4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "312910e0-7714-4dad-9feb-69bc8407a71d",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 411,
+      "total_deletions": 0,
+      "accepted_lines": 411,
+      "overriden_lines": 0
+    }
+  }
+}
