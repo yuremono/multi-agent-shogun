@@ -1,0 +1,88 @@
+.gitignore
+  d7b8a1e1c5b045ff 47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.0.42",
+  "base_commit_sha": "9ef5a0f990ea20eb418c9446c8f6ec8579adda1a",
+  "prompts": {
+    "157e52fff8e30697": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8077fdfd-9c27-4aff-b1c2-c8ba5d663ae4",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 279,
+      "total_deletions": 17,
+      "accepted_lines": 254,
+      "overriden_lines": 27
+    },
+    "61e8f64b717f87b8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ebe94540-5e99-42c7-a824-51fb436f820b",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 5,
+      "total_deletions": 24,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    },
+    "75fc90414040b095": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e73ba987-ac1c-4bab-8f25-1598966aa1e1",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 32,
+      "total_deletions": 22,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    },
+    "a02932062bc9b446": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f31d7aae-7b75-47a6-8fd3-7527eef19c0a",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 22,
+      "total_deletions": 0,
+      "accepted_lines": 22,
+      "overriden_lines": 0
+    },
+    "d7b8a1e1c5b045ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3999bad0-7850-436f-b64d-af82b08a6ac8",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "f4c07b10751d81f0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ce760143-97d0-49c7-b995-af76394b8ea6",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 256,
+      "total_deletions": 0,
+      "accepted_lines": 256,
+      "overriden_lines": 0
+    }
+  }
+}
