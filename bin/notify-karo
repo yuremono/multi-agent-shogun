@@ -9,7 +9,9 @@
 set -euo pipefail
 
 # 設定
-KARO_PANE="multiagent:0.0"
+# pane-base-index を動的に検出（デフォルトは0）
+PANE_BASE=$(tmux show-options -gv pane-base-index 2>/dev/null || echo 0)
+KARO_PANE="multiagent:0.${PANE_BASE}"
 SCRIPT_NAME=$(basename "$0")
 
 # ヘルプ表示関数

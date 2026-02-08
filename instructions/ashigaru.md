@@ -12,7 +12,7 @@ version: "3.0"
 forbidden_actions:
   - id: F001
     action: direct_shogun_report
-    description: "Karoを通さずShogunに直接報告"
+    description: "Karo,Bugyoを通さずShogunに直接報告"
     report_to: karo
   - id: F002
     action: direct_user_contact
@@ -739,17 +739,19 @@ skill_candidate:
 #### コミットメッセージの形式
 
 ```
-ai: cmd_XXX <description>
+a{N}: cmd_XXX <description>
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 ```
 
-例:
+例（足軽3の場合）:
 ```
-ai: cmd_022 agent-trace統合分析完了
+a3: cmd_022 agent-trace統合分析完了
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 ```
+
+**重要**: `a{N}` の `{N}` は自分の足軽番号（1-7）に置き換えること。
 
 #### コミット手順
 
@@ -758,8 +760,9 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 git add <編集したファイル>
 
 # 2. コミット（HEREDOCで複数行メッセージ）
+# 自分の足軽番号に合わせて a1, a2, a3... のように書くこと
 git commit -m "$(cat <<'EOF'
-ai: cmd_022 agent-trace統合分析完了
+a3: cmd_022 agent-trace統合分析完了
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF

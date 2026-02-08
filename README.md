@@ -4,7 +4,7 @@
 
 **Command your AI army like a feudal warlord.**
 
-Run 8 Claude Code agents in parallel — orchestrated through a samurai-inspired hierarchy with zero coordination overhead.
+Run 9 Claude Code agents in parallel — orchestrated through a samurai-inspired hierarchy with zero coordination overhead.
 
 [![GitHub Stars](https://img.shields.io/github/stars/yohey-w/multi-agent-shogun?style=social)](https://github.com/yohey-w/multi-agent-shogun)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -19,11 +19,11 @@ Run 8 Claude Code agents in parallel — orchestrated through a samurai-inspired
   <img src="assets/screenshots/tmux_multiagent_9panes.png" alt="multi-agent-shogun: 9 panes running in parallel" width="800">
 </p>
 
-<p align="center"><i>One Karo (manager) coordinating 8 Ashigaru (workers) — real session, no mock data.</i></p>
+<p align="center"><i>One Karo (advisor) + One Bugyo (coordinator) managing 7 Ashigaru (workers) — real session, no mock data.</i></p>
 
 ---
 
-Give a single command. The **Shogun** (general) delegates to the **Karo** (steward), who distributes work across up to **8 Ashigaru** (foot soldiers) — all running as independent Claude Code processes in tmux. Communication flows through YAML files and tmux `send-keys`, meaning **zero extra API calls** for agent coordination.
+Give a single command. The **Shogun** (general) delegates to the **Karo** (advisor), who plans strategy and delegates to the **Bugyo** (coordinator), who distributes work across up to **7 Ashigaru** (foot soldiers) — all running as independent Claude Code processes in tmux. Communication flows through YAML files and tmux `send-keys`, meaning **zero extra API calls** for agent coordination.
 
 <!-- TODO: add demo.gif — record with asciinema or vhs -->
 
@@ -34,7 +34,7 @@ Most multi-agent frameworks burn API tokens on coordination. Shogun doesn't.
 | | Claude Code `Task` tool | LangGraph | CrewAI | **multi-agent-shogun** |
 |---|---|---|---|---|
 | **Architecture** | Subagents inside one process | Graph-based state machine | Role-based agents | Feudal hierarchy via tmux |
-| **Parallelism** | Sequential (one at a time) | Parallel nodes (v0.2+) | Limited | **8 independent agents** |
+| **Parallelism** | Sequential (one at a time) | Parallel nodes (v0.2+) | Limited | **9 independent agents** |
 | **Coordination cost** | API calls per Task | API + infra (Postgres/Redis) | API + CrewAI platform | **Zero** (YAML + tmux) |
 | **Observability** | Claude logs only | LangSmith integration | OpenTelemetry | **Live tmux panes** + dashboard |
 | **Skill discovery** | None | None | None | **Bottom-up auto-proposal** |
@@ -42,11 +42,11 @@ Most multi-agent frameworks burn API tokens on coordination. Shogun doesn't.
 
 ### What makes this different
 
-**Zero coordination overhead** — Agents talk through YAML files on disk. The only API calls are for actual work, not orchestration. Run 8 agents and pay only for 8 agents' work.
+**Zero coordination overhead** — Agents talk through YAML files on disk. The only API calls are for actual work, not orchestration. Run 9 Claude Code processes (1 Karo + 1 Bugyo + 7 Ashigaru) and pay only for 9 agents' work.
 
 **Full transparency** — Every agent runs in a visible tmux pane. Every instruction, report, and decision is a plain YAML file you can read, diff, and version-control. No black boxes.
 
-**Battle-tested hierarchy** — The Shogun → Karo → Ashigaru chain of command prevents conflicts by design: clear ownership, dedicated files per agent, event-driven communication, no polling.
+**Battle-tested hierarchy** — The Shogun → Karo → Bugyo → Ashigaru chain of command prevents conflicts by design: clear ownership, dedicated files per agent, event-driven communication, no polling.
 
 ---
 
@@ -87,20 +87,27 @@ Skills grow organically from real work — not from a predefined template librar
       └──────┬──────┘
              │  YAML + send-keys
       ┌──────▼──────┐
-      │    KARO     │  Breaks tasks down, assigns to workers
+      │    KARO     │  Breaks tasks down, plans execution (advisor/brain)
       │    (家老)    │  Session: multiagent, pane 0
       └──────┬──────┘
+             │  Task distribution YAML
+      ┌──────▼──────┐
+      │    BUGYO    │  Distributes tasks, coordinates workers (coordinator/hands)
+      │    (奉行)    │  Session: multiagent, pane 8
+      └──────┬──────┘
              │  YAML + send-keys
-    ┌─┬─┬─┬─┴─┬─┬─┬─┐
-    │1│2│3│4│5│6│7│8│  Execute in parallel
-    └─┴─┴─┴─┴─┴─┴─┴─┘
+    ┌─┬─┬─┬─┴─┬─┬─┐
+    │1│2│3│4│5│6│7│  Execute in parallel
+    └─┴─┴─┴─┴─┴─┴─┘
          ASHIGARU (足軽)
-         Panes 1-8
+         Panes 1-7
 ```
+
+> **Organization reform**: After the Karo "died from overwork" (simultaneous reports from 8 workers crashed Claude CLI), the role was split into **Karo** (advisor/brain) and **Bugyo** (coordinator/hands). This reduced context consumption by 60-70%. Ashigaru 8 was promoted to Bugyo, leaving 7 Ashigaru.
 
 **Communication protocol:**
 - **Downward** (orders): Write YAML → wake target with `tmux send-keys`
-- **Upward** (reports): Write YAML only (no send-keys to avoid interrupting your input)
+- **Upward** (reports): Ashigaru → Bugyo → Karo → Shogun (prevents "friendly fire" crashes)
 - **Polling**: Forbidden. Event-driven only. Your API bill stays predictable.
 
 **Context persistence (4 layers):**
@@ -120,10 +127,10 @@ After `/clear`, an agent recovers in **~2,000 tokens** by reading Memory MCP + i
 
 Agents can be deployed in different **formations** (陣形 / *jindate*) depending on the task:
 
-| Formation | Ashigaru 1–4 | Ashigaru 5–8 | Best for |
-|-----------|-------------|-------------|----------|
-| **Normal** (default) | Sonnet | Opus | Everyday tasks — cost-efficient |
-| **Battle** (`-k` flag) | Opus | Opus | Critical tasks — maximum capability |
+| Formation | Ashigaru 1–4 | Ashigaru 5–7 | Bugyo | Best for |
+|-----------|-------------|-------------|-------|----------|
+| **Normal** (default) | Sonnet | Opus | Opus | Everyday tasks — cost-efficient |
+| **Battle** (`-k` flag) | Opus | Opus | Opus | Critical tasks — maximum capability |
 
 ```bash
 ./shutsujin_departure.sh          # Normal formation
@@ -332,7 +339,7 @@ projects:
     status: active
 ```
 
-**Research sprints** — 8 agents research different topics in parallel, results compiled in minutes.
+**Research sprints** — 9 agents research different topics in parallel, results compiled in minutes.
 
 **Multi-project management** — Switch between client projects without losing context. Memory MCP preserves preferences across sessions.
 
@@ -356,8 +363,9 @@ language: en   # Samurai Japanese + English translation
 |-------|--------------|----------|
 | Shogun | Opus | Disabled (delegation doesn't need deep reasoning) |
 | Karo | Opus | Enabled |
+| Bugyo | Opus | Enabled |
 | Ashigaru 1–4 | Sonnet | Enabled |
-| Ashigaru 5–8 | Opus | Enabled |
+| Ashigaru 5–7 | Opus | Enabled |
 
 ### MCP servers
 
@@ -398,6 +406,7 @@ multi-agent-shogun/
 ├── instructions/              # Agent behavior definitions
 │   ├── shogun.md
 │   ├── karo.md
+│   ├── bugyo.md
 │   └── ashigaru.md
 │
 ├── config/
@@ -406,8 +415,9 @@ multi-agent-shogun/
 │
 ├── queue/                     # Communication (source of truth)
 │   ├── shogun_to_karo.yaml
-│   ├── tasks/ashigaru{1-8}.yaml
-│   └── reports/ashigaru{1-8}_report.yaml
+│   ├── tasks/task_distribution.yaml
+│   ├── tasks/ashigaru{1-7}.yaml
+│   └── reports/ashigaru{1-7}_report.yaml
 │
 ├── memory/                    # Memory MCP persistent storage
 ├── dashboard.md               # Human-readable status board
@@ -496,7 +506,7 @@ Based on [Claude-Code-Communication](https://github.com/Akira-Papa/Claude-Code-C
 
 <div align="center">
 
-**One command. Eight agents. Zero coordination cost.**
+**One command. Nine agents. Zero coordination cost.**
 
 ⭐ Star this repo if you find it useful — it helps others discover it.
 
