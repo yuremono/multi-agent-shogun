@@ -1,6 +1,10 @@
 # Order file (internal use only)
 claude-shogun-orders.md
 
+# macOS system files
+.DS_Store
+._*
+
 # Claude Code settings
 .claude/*
 !.claude/settings.json
@@ -40,6 +44,7 @@ logs/
 
 # Project details (contains client/confidential info)
 projects/
+WORKS/
 
 # Internal docs (operation logs, test plans, article drafts)
 docs/
