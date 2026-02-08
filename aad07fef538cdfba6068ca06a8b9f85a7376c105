@@ -1,0 +1,25 @@
+instructions/bugyo.md
+  87a4d8f30b1698ec 302,305-306
+instructions/ashigaru.md
+  87a4d8f30b1698ec 742,747,749,754-755,763,765
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.0.42",
+  "base_commit_sha": "aad07fef538cdfba6068ca06a8b9f85a7376c105",
+  "prompts": {
+    "87a4d8f30b1698ec": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8f0f6446-199a-4d25-a919-7f6a5a24e8cf",
+        "model": "glm-4.7"
+      },
+      "human_author": "yuremono <5alviaofficinali50@gmail.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 5,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    }
+  }
+}
