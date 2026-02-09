@@ -1,30 +1,64 @@
 # Context ディレクトリ
 
-このディレクトリは、プロジェクト固有の技術知見や注意事項を管理する場所です。
+このディレクトリは、Agent Teamsインフラのシステム説明を管理する場所です。
 
-## 使い方
+## ディレクトリの役割
 
-プロジェクトごとに技術知見を記述したファイルを配置します。
+この `context/` ディレクトリは **インフラ（multi-agent-shogun）のシステム説明** を管理します。
+
+- **インフラ用**: システムアーキテクチャ、ワークフロー、通信プロトコル等の説明
+- **プロジェクト用**: 各プロジェクト固有の知見は `WORKS/{MMDD}{ProjectName}/context/` に配置
+
+## ファイル構成
 
 ```
 context/
-├── README.md           # このファイル
-├── project-a.md       # プロジェクトAの知見
-└── project-b.md       # プロジェクトBの知見
+├── README.md              # このファイル
+├── system_architecture.md # Agent Teamsシステムアーキテクチャ
+├── workflow.md            # ワークフロー詳細
+├── protocols.md           # 通信プロトコル詳細
+├── memory_mcp_rules.md    # Memory MCP活用ルール
+└── voice_input_guide.md   # 音声入力ガイド
 ```
 
-タスク実行時に、プロジェクトに応じたcontextファイルを参照するように指示します。
+## 各ファイルの説明
 
-## ファイル形式
+| ファイル | 内容 |
+|---------|------|
+| **system_architecture.md** | Agent Teamsのシステム構造、階層、エージェント定義 |
+| **workflow.md** | セッション開始・コンパクション復帰の手順、タスク管理 |
+| **protocols.md** | TeamCreate, Task, SendMessage等の通信プロトコル |
+| **memory_mcp_rules.md** | Memory MCPの保存基準と運用ルール |
+| **voice_input_guide.md** | 音声入力誤変換パターンと解釈ガイド |
 
-各contextファイルには以下を含めます：
+## プロジェクト固有コンテキスト
 
-- プロジェクトの概要
-- 使用技術スタック
-- 注意事項・禁止事項
-- 参考リンク
+各プロジェクト固有の技術知見・注意事項は、プロジェクトディレクトリ内に配置します：
 
-## テンプレート
+```
+WORKS/{MMDD}{ProjectName}/
+├── context/
+│   └── {project}.md      # プロジェクト固有の技術知見
+├── project.yaml          # プロジェクト詳細
+├── src/                  # ソースコード
+└── docs/                 # 設計書等
+```
+
+## 使い方
+
+### インフラの仕組みを知りたい場合
+
+1. `context/system_architecture.md` を読んでシステム全体像を把握
+2. `context/workflow.md` を読んで作業手順を理解
+3. `context/protocols.md` を読んで通信方法を理解
+
+### 新規プロジェクトを開始する場合
+
+1. `WORKS/{MMDD}{ProjectName}/` を作成
+2. `WORKS/{MMDD}{ProjectName}/context/{project}.md` を作成
+3. プロジェクト固有の技術知見・注意事項を記載
+
+## プロジェクトコンテキストのテンプレート
 
 ```markdown
 # {project_id} プロジェクトコンテキスト
@@ -53,6 +87,6 @@ context/
 
 ## 更新ルール
 
-- 重要な決定があったら即座に更新
+- システムに大きな変更があったら即座に更新
 - 日付を必ず更新
 - 不要になった情報は削除（シンプルに保つ）
